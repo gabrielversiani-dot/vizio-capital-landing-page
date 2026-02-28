@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vizio Capital — Seguro de Vida em Grupo para PMEs</title>
+  <meta name="description" content="Cotação gratuita de Seguro de Vida em Grupo para empresas obrigadas por convenção coletiva. Sem burocracia, com as maiores seguradoras do Brasil." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: {
+              900: '#0d0d0d',
+              800: '#1a1a1a',
+              700: '#222222',
+              600: '#2a2a2a',
+            },
+            gold: {
+              DEFAULT: '#c5a55a',
+              dark: '#b8944a',
+              light: '#d4b96a',
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Inter"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <style>
+    * { scroll-behavior: smooth; }
+    body { background-color: #0d0d0d; }
+
+    /* Subtle grid pattern overlay */
+    .hero-bg {
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(197,165,90,0.07) 0%, transparent 60%),
+        linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
+    }
+
+    /* Gold gradient for text */
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #d4b96a 0%, #c5a55a 40%, #b8944a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Card glow effect */
+    .card-glow {
+      background: linear-gradient(145deg, rgba(42,42,42,0.8) 0%, rgba(26,26,26,0.9) 100%);
+      border: 1px solid rgba(197,165,90,0.15);
+      transition: all 0.3s ease;
+    }
+    .card-glow:hover {
+      border-color: rgba(197,165,90,0.4);
+      box-shadow: 0 0 30px rgba(197,165,90,0.08);
+      transform: translateY(-2px);
+    }
+
+    /* Form input styling */
+    .form-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+    }
+    .form-input:focus {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(197,165,90,0.5);
+      box-shadow: 0 0 0 3px rgba(197,165,90,0.1);
+      outline: none;
+    }
+
+    /* CTA button pulse */
+    .cta-btn {
+      background: linear-gradient(135deg, #c5a55a 0%, #b8944a 100%);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-btn:hover {
+      background: linear-gradient(135deg, #d4b96a 0%, #c5a55a 100%);
+      box-shadow: 0 4px 25px rgba(197,165,90,0.35);
+      transform: translateY(-1px);
+    }
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+      transform: rotate(45deg);
+      animation: shimmer 3s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    /* Counter animation */
+    .counter-number {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Urgency section */
+    .urgency-bg {
+      background: linear-gradient(135deg, rgba(197,165,90,0.08) 0%, rgba(26,26,26,1) 50%, rgba(197,165,90,0.05) 100%);
+    }
+
+    /* Divider */
+    .gold-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(197,165,90,0.3), transparent);
+    }
+
+    /* Logo glow effect */
+    .logo-glow {
+      position: relative;
+      display: inline-block;
+    }
+    .logo-glow::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150%;
+      height: 150%;
+      background: radial-gradient(circle, rgba(197,165,90,0.2) 0%, rgba(197,165,90,0.05) 70%, transparent 100%);
+      border-radius: 50%;
+      z-index: -1;
+      filter: blur(30px);
+    }
+
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(197,165,90,0.3);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; }
+      50% { transform: translateY(-20px) scale(1.5); opacity: 0.6; }
+    }
+
+    /* Select arrow */
+    select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23c5a55a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+
+    /* Scroll animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease-out;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="font-sans text-white antialiased">
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section class="hero-bg relative min-h-screen flex items-center overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="particle" style="top:10%; left:15%; animation-delay:0s;"></div>
+    <div class="particle" style="top:20%; left:80%; animation-delay:1s;"></div>
+    <div class="particle" style="top:60%; left:10%; animation-delay:2s;"></div>
+    <div class="particle" style="top:70%; left:90%; animation-delay:3s;"></div>
+    <div class="particle" style="top:40%; left:50%; animation-delay:4s;"></div>
+    <div class="particle" style="top:85%; left:30%; animation-delay:1.5s;"></div>
+    <div class="particle" style="top:30%; left:65%; animation-delay:2.5s;"></div>
+
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 relative z-10">
+      <!-- Logo with Slogan -->
+      <div class="mb-12 lg:mb-20 flex flex-col items-start gap-8">
+        <!-- Logo Component: Sun Icon + Text -->
+        <div class="logo-glow flex items-center gap-4 sm:gap-6">
+          <img src="assets/sol-vizio.png" alt="Vizio" class="h-20 sm:h-28 lg:h-40 w-auto object-contain" />
+          <div>
+            <div class="font-sans font-light tracking-widest text-3xl sm:text-4xl lg:text-6xl text-white leading-none">VIZIO</div>
+            <div class="flex items-center gap-3 mt-2">
+              <div class="flex-1 h-px bg-white"></div>
+              <div class="font-sans font-light tracking-widest text-sm sm:text-base lg:text-xl text-white">CAPITAL</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Slogan -->
+        <div class="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold leading-tight">
+          <span class="text-white">Viver bem é estar</span>
+          <br />
+          <span class="italic text-gold-gradient">protegido!</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <!-- Left: Headline -->
+        <div class="space-y-6 pt-8">
+          <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-[3.4rem] leading-tight font-bold">
+            <span class="italic text-gold-gradient">Sua empresa é obrigada</span>
+            <br />
+            <span class="text-white">pela convenção coletiva a oferecer</span>
+            <br />
+            <span class="italic text-gold-gradient">Seguro de Vida em Grupo?</span>
+          </h1>
+          <p class="text-gray-400 text-lg sm:text-xl leading-relaxed max-w-xl">
+            Cotação gratuita em menos de <strong class="text-white">24 horas</strong>. Sem burocracia. Com as <strong class="text-white">maiores seguradoras do Brasil</strong>.
+          </p>
+          <div class="flex items-center gap-3 pt-2">
+            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+            <span class="text-sm text-gray-500 uppercase tracking-wider">Atendimento ativo agora</span>
+          </div>
+        </div>
+
+        <!-- Right: Form -->
+        <div class="card-glow rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+          <div class="text-center mb-6">
+            <h2 class="font-serif italic text-xl sm:text-2xl text-gold mb-2">Solicite sua cotação gratuita</h2>
+            <p class="text-gray-400 text-sm">Preencha os dados abaixo e receba em até 24h</p>
+          </div>
+
+          <form id="leadForm" class="space-y-4" onsubmit="handleSubmit(event)">
+            <div>
+              <input type="text" name="nome" placeholder="Nome completo" required
+                class="form-input w-full rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm" />
+            </div>
+            <div>
+              <input type="text" name="empresa" placeholder="Nome da empresa" required
+                class="form-input w-full rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm" />
+            </div>
+            <div>
+              <input type="text" name="cargo" placeholder="Cargo"
+                class="form-input w-full rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <select name="funcionarios" required
+                  class="form-input w-full rounded-xl px-4 py-3 text-white text-sm">
+                  <option value="" disabled selected class="text-gray-500 bg-dark-800">Nº de funcionários</option>
+                  <option value="10-20" class="bg-dark-800">10 – 20</option>
+                  <option value="21-50" class="bg-dark-800">21 – 50</option>
+                  <option value="51-100" class="bg-dark-800">51 – 100</option>
+                  <option value="100+" class="bg-dark-800">100+</option>
+                </select>
+              </div>
+              <div>
+                <select name="estado" required
+                  class="form-input w-full rounded-xl px-4 py-3 text-white text-sm">
+                  <option value="" disabled selected class="text-gray-500 bg-dark-800">Estado</option>
+                  <option value="AC" class="bg-dark-800">Acre</option>
+                  <option value="AL" class="bg-dark-800">Alagoas</option>
+                  <option value="AP" class="bg-dark-800">Amapá</option>
+                  <option value="AM" class="bg-dark-800">Amazonas</option>
+                  <option value="BA" class="bg-dark-800">Bahia</option>
+                  <option value="CE" class="bg-dark-800">Ceará</option>
+                  <option value="DF" class="bg-dark-800">Distrito Federal</option>
+                  <option value="ES" class="bg-dark-800">Espírito Santo</option>
+                  <option value="GO" class="bg-dark-800">Goiás</option>
+                  <option value="MA" class="bg-dark-800">Maranhão</option>
+                  <option value="MT" class="bg-dark-800">Mato Grosso</option>
+                  <option value="MS" class="bg-dark-800">Mato Grosso do Sul</option>
+                  <option value="MG" class="bg-dark-800">Minas Gerais</option>
+                  <option value="PA" class="bg-dark-800">Pará</option>
+                  <option value="PB" class="bg-dark-800">Paraíba</option>
+                  <option value="PR" class="bg-dark-800">Paraná</option>
+                  <option value="PE" class="bg-dark-800">Pernambuco</option>
+                  <option value="PI" class="bg-dark-800">Piauí</option>
+                  <option value="RJ" class="bg-dark-800">Rio de Janeiro</option>
+                  <option value="RN" class="bg-dark-800">Rio Grande do Norte</option>
+                  <option value="RS" class="bg-dark-800">Rio Grande do Sul</option>
+                  <option value="RO" class="bg-dark-800">Rondônia</option>
+                  <option value="RR" class="bg-dark-800">Roraima</option>
+                  <option value="SC" class="bg-dark-800">Santa Catarina</option>
+                  <option value="SP" class="bg-dark-800">São Paulo</option>
+                  <option value="SE" class="bg-dark-800">Sergipe</option>
+                  <option value="TO" class="bg-dark-800">Tocantins</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <input type="tel" name="whatsapp" placeholder="WhatsApp (com DDD)" required
+                class="form-input w-full rounded-xl px-4 py-3 text-white placeholder-gray-500 text-sm" />
+            </div>
+            <button type="submit"
+              class="cta-btn w-full rounded-xl px-6 py-4 text-dark-900 font-bold text-sm sm:text-base uppercase tracking-wider mt-2">
+              QUERO MINHA COTAÇÃO GRATUITA
+            </button>
+            <p class="text-center text-gray-600 text-xs mt-2">
+              <svg class="inline w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              Seus dados estão seguros e protegidos
+            </p>
+          </form>
+
+          <!-- Success message (hidden by default) -->
+          <div id="formSuccess" class="hidden text-center py-8">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+              <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h3 class="font-serif italic text-xl text-gold mb-2">Recebemos sua solicitação!</h3>
+            <p class="text-gray-400 text-sm">Nossa equipe entrará em contato em até 24 horas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom gradient fade -->
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-dark-800 to-transparent"></div>
+  </section>
+
+  <!-- ==================== BENEFÍCIOS ==================== -->
+  <section class="bg-dark-800 py-20 lg:py-28 relative">
+    <div class="gold-divider w-full absolute top-0"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-14 fade-up">
+        <p class="text-gold uppercase tracking-[0.2em] text-sm font-medium mb-3">Por que escolher a Vizio</p>
+        <h2 class="font-serif italic text-3xl sm:text-4xl lg:text-5xl font-bold">
+          O melhor para sua <span class="text-gold-gradient">empresa</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <!-- Card 1 -->
+        <div class="card-glow rounded-2xl p-8 fade-up" style="transition-delay: 0.1s;">
+          <div class="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <h3 class="font-serif italic text-xl text-white mb-3">Acesso às maiores seguradoras do Brasil</h3>
+          <p class="text-gray-400 text-sm leading-relaxed mb-5">
+            Trabalhamos com as seguradoras mais sólidas e confiáveis do mercado, garantindo as melhores condições e coberturas para sua empresa.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs px-3 py-1 rounded-full border border-gold/20 text-gold/80">MetLife</span>
+            <span class="text-xs px-3 py-1 rounded-full border border-gold/20 text-gold/80">Prudential</span>
+            <span class="text-xs px-3 py-1 rounded-full border border-gold/20 text-gold/80">Porto Seguro</span>
+            <span class="text-xs px-3 py-1 rounded-full border border-gold/20 text-gold/80">MAG</span>
+            <span class="text-xs px-3 py-1 rounded-full border border-gold/20 text-gold/80">Bradesco</span>
+            <span class="text-xs px-3 py-1 rounded-full border border-gold/20 text-gold/80">SulAmérica</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card-glow rounded-2xl p-8 fade-up" style="transition-delay: 0.2s;">
+          <div class="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h3 class="font-serif italic text-xl text-white mb-3">Implantação rápida e sem burocracia</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Cuidamos de todo o processo de implantação do seguro de vida em grupo, do início ao fim. Sua empresa fica em conformidade rapidamente, sem complicações ou papelada desnecessária.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card-glow rounded-2xl p-8 fade-up" style="transition-delay: 0.3s;">
+          <div class="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="font-serif italic text-xl text-white mb-3">Suporte completo do início ao fim</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Somos o seu <strong class="text-white">RH estratégico externo</strong>. Acompanhamos cada etapa — da cotação à gestão contínua do benefício — para que você foque no que realmente importa.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== AGENTE IA - ANÁLISE DE APÓLICE ==================== -->
+  <section id="agente-ia" class="bg-dark-800 py-20 lg:py-28 relative">
+    <div class="gold-divider w-full absolute top-0"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Header -->
+      <div class="text-center mb-14 fade-up">
+        <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/20 rounded-full px-4 py-1.5 mb-4">
+          <div class="w-2 h-2 rounded-full bg-gold animate-pulse"></div>
+          <span class="text-gold text-xs uppercase tracking-wider font-medium">Inteligência Artificial</span>
+        </div>
+        <h2 class="font-serif italic text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+          Análise de Apólice com <span class="text-gold-gradient">IA</span>
+        </h2>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+          Envie sua apólice atual e receba uma análise completa de conformidade, gaps de cobertura e comparação de preço em segundos.
+        </p>
+      </div>
+
+      <!-- Two-column layout: Form | Results -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+
+        <!-- LEFT: Form -->
+        <div id="ia-form-panel" class="fade-up">
+          <div class="card-glow rounded-2xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center">
+                <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              </div>
+              <div>
+                <h3 class="font-serif italic text-lg text-white">Dados da Empresa</h3>
+                <p class="text-gray-500 text-xs">Preencha para uma análise personalizada</p>
+              </div>
+            </div>
+
+            <form id="iaForm" class="space-y-3">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input type="text" name="ia_nome" placeholder="Nome completo" required class="form-input w-full rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm" />
+                <input type="text" name="ia_empresa" placeholder="Empresa" required class="form-input w-full rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm" />
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input type="text" name="ia_cnpj" placeholder="CNPJ" class="form-input w-full rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm" />
+                <input type="tel" name="ia_whatsapp" placeholder="WhatsApp (com DDD)" class="form-input w-full rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm" />
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input type="email" name="ia_email" placeholder="E-mail" class="form-input w-full rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm" />
+                <input type="text" name="ia_convencao" placeholder="Convenção Coletiva (sindicato)" class="form-input w-full rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm" />
+              </div>
+
+              <!-- PDF Upload -->
+              <div class="mt-4">
+                <label class="block text-sm text-gray-400 mb-2">Upload da Apólice (PDF)</label>
+                <div id="dropZone" class="border-2 border-dashed border-gold/20 rounded-xl p-6 text-center cursor-pointer hover:border-gold/40 transition-all">
+                  <svg class="w-10 h-10 text-gold/50 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                  <p class="text-gray-400 text-sm">Arraste o PDF aqui ou <span class="text-gold">clique para selecionar</span></p>
+                  <p id="fileName" class="text-gold text-sm mt-2 hidden"></p>
+                  <input type="file" id="pdfInput" name="apolice" accept=".pdf" class="hidden" />
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <button type="submit" id="iaSubmitBtn" class="cta-btn w-full rounded-xl px-6 py-3.5 text-dark-900 font-bold text-sm uppercase tracking-wider mt-4">
+                <span id="iaSubmitText">Analisar Apólice com IA</span>
+                <span id="iaSubmitLoading" class="hidden flex items-center justify-center gap-2">
+                  <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  Analisando com IA...
+                </span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- RIGHT: Results Panel (hidden initially) -->
+        <div id="ia-results-panel" class="fade-up" style="transition-delay: 0.2s;">
+          <!-- Placeholder before analysis -->
+          <div id="ia-placeholder" class="card-glow rounded-2xl p-8 flex flex-col items-center justify-center min-h-[500px] text-center">
+            <div class="w-20 h-20 rounded-full bg-gold/5 border border-gold/15 flex items-center justify-center mb-6">
+              <svg class="w-10 h-10 text-gold/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <h3 class="font-serif italic text-xl text-white mb-2">Relatório de Análise</h3>
+            <p class="text-gray-500 text-sm max-w-xs">Preencha o formulário e envie sua apólice para receber a análise completa com inteligência artificial.</p>
+            <div class="mt-6 grid grid-cols-3 gap-4 w-full max-w-sm">
+              <div class="bg-dark-700/50 rounded-lg p-3 text-center">
+                <div class="w-8 h-8 rounded-full bg-gold/10 mx-auto mb-1"></div>
+                <p class="text-gray-600 text-xs">Score</p>
+              </div>
+              <div class="bg-dark-700/50 rounded-lg p-3 text-center">
+                <div class="w-8 h-8 rounded-full bg-gold/10 mx-auto mb-1"></div>
+                <p class="text-gray-600 text-xs">Gaps</p>
+              </div>
+              <div class="bg-dark-700/50 rounded-lg p-3 text-center">
+                <div class="w-8 h-8 rounded-full bg-gold/10 mx-auto mb-1"></div>
+                <p class="text-gray-600 text-xs">Preço</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analysis Results (hidden initially) -->
+          <div id="ia-results" class="hidden space-y-4">
+
+            <!-- Score Gauge -->
+            <div class="card-glow rounded-2xl p-6 text-center">
+              <p class="text-gold uppercase tracking-[0.2em] text-xs font-medium mb-4">Score de Conformidade</p>
+              <div class="relative w-40 h-40 mx-auto mb-4">
+                <svg class="w-40 h-40 transform -rotate-90" viewBox="0 0 160 160">
+                  <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="12"/>
+                  <circle id="scoreArc" cx="80" cy="80" r="70" fill="none" stroke="#c5a55a" stroke-width="12" stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440" style="transition: stroke-dashoffset 1.5s ease-out, stroke 0.5s ease;"/>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span id="scoreNumber" class="text-4xl font-bold text-white">--</span>
+                  <span id="scoreLabel" class="text-xs text-gray-400">Aguardando</span>
+                </div>
+              </div>
+              <p id="scoreResumo" class="text-gray-400 text-sm leading-relaxed"></p>
+            </div>
+
+            <!-- Coberturas -->
+            <div class="card-glow rounded-2xl p-6">
+              <h4 class="font-serif italic text-lg text-white mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                Coberturas Analisadas
+              </h4>
+              <div id="coberturasGrid" class="space-y-2"></div>
+            </div>
+
+            <!-- Gaps -->
+            <div class="card-glow rounded-2xl p-6">
+              <h4 class="font-serif italic text-lg text-white mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                Gaps de Cobertura
+              </h4>
+              <div id="gapsGrid" class="space-y-3"></div>
+            </div>
+
+            <!-- Preço vs Mercado -->
+            <div class="card-glow rounded-2xl p-6">
+              <h4 class="font-serif italic text-lg text-white mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Comparação de Preço
+              </h4>
+              <div id="precoGrid" class="grid grid-cols-2 gap-3"></div>
+            </div>
+
+            <!-- Recomendações -->
+            <div class="card-glow rounded-2xl p-6">
+              <h4 class="font-serif italic text-lg text-white mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                Recomendações
+              </h4>
+              <div id="recsGrid" class="space-y-2"></div>
+            </div>
+
+            <!-- CTA -->
+            <div class="card-glow rounded-2xl p-6 text-center border-gold/30">
+              <p class="text-white font-semibold mb-2">Quer uma análise ainda mais detalhada?</p>
+              <p class="text-gray-400 text-sm mb-4">Nossos consultores podem revisar sua apólice e negociar melhores condições.</p>
+              <a href="#leadForm" class="cta-btn inline-block rounded-xl px-8 py-3 text-dark-900 font-bold text-sm uppercase tracking-wider">Falar com Consultor</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Section (hidden initially) -->
+      <div id="ia-chat-section" class="hidden mt-12 fade-up">
+        <div class="card-glow rounded-2xl overflow-hidden max-w-4xl mx-auto">
+          <div class="bg-dark-700/50 px-6 py-4 flex items-center gap-3 border-b border-gold/10">
+            <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center">
+              <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+            </div>
+            <div>
+              <h4 class="text-white text-sm font-semibold">Chat com Especialista IA</h4>
+              <p class="text-gray-500 text-xs">Tire dúvidas sobre sua análise</p>
+            </div>
+            <div class="ml-auto flex items-center gap-1">
+              <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+              <span class="text-green-400 text-xs">Online</span>
+            </div>
+          </div>
+          <div id="chatMessages" class="p-4 space-y-3 max-h-80 overflow-y-auto" style="min-height: 200px;">
+            <div class="flex gap-3">
+              <div class="w-7 h-7 rounded-full bg-gold/20 flex-shrink-0 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div class="bg-dark-700/50 rounded-xl rounded-tl-none px-4 py-2.5 max-w-[80%]">
+                <p class="text-gray-300 text-sm">Olá! Sou o assistente especialista da Vizio Capital. Analisei sua apólice e estou pronto para responder suas dúvidas. O que gostaria de saber?</p>
+              </div>
+            </div>
+          </div>
+          <div class="px-4 pb-4 flex gap-2">
+            <input type="text" id="chatInput" placeholder="Digite sua pergunta..." class="form-input flex-1 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm" />
+            <button id="chatSendBtn" class="cta-btn rounded-xl px-5 py-2.5 text-dark-900 font-bold text-sm flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+              Enviar
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== PROVA SOCIAL (NÚMEROS) ==================== -->
+  <section class="bg-dark-900 py-20 lg:py-28 relative overflow-hidden">
+    <div class="gold-divider w-full absolute top-0"></div>
+    <!-- Background decoration -->
+    <div class="absolute inset-0 opacity-5">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-gold/20"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-gold/20"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-14 fade-up">
+        <p class="text-gold uppercase tracking-[0.2em] text-sm font-medium mb-3">Números que falam por nós</p>
+        <h2 class="font-serif italic text-3xl sm:text-4xl lg:text-5xl font-bold">
+          Resultados que <span class="text-gold-gradient">comprovam</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div class="text-center fade-up card-glow rounded-2xl py-10 px-4" style="transition-delay: 0.1s;">
+          <div class="counter-number text-4xl sm:text-5xl lg:text-6xl font-bold text-gold-gradient mb-2" data-target="12">+12</div>
+          <p class="text-gray-400 text-sm sm:text-base">anos de mercado</p>
+        </div>
+        <div class="text-center fade-up card-glow rounded-2xl py-10 px-4" style="transition-delay: 0.2s;">
+          <div class="counter-number text-4xl sm:text-5xl lg:text-6xl font-bold text-gold-gradient mb-2" data-target="70">+70 mil</div>
+          <p class="text-gray-400 text-sm sm:text-base">vidas protegidas</p>
+        </div>
+        <div class="text-center fade-up card-glow rounded-2xl py-10 px-4" style="transition-delay: 0.3s;">
+          <div class="counter-number text-4xl sm:text-5xl lg:text-6xl font-bold text-gold-gradient mb-2" data-target="20">+20</div>
+          <p class="text-gray-400 text-sm sm:text-base">seguradoras parceiras</p>
+        </div>
+        <div class="text-center fade-up card-glow rounded-2xl py-10 px-4" style="transition-delay: 0.4s;">
+          <div class="counter-number text-4xl sm:text-5xl lg:text-6xl font-bold text-gold-gradient mb-2" data-target="250">+250</div>
+          <p class="text-gray-400 text-sm sm:text-base">empresas atendidas</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== POR QUE A VIZIO? ==================== -->
+  <section class="bg-dark-800 py-20 lg:py-28 relative">
+    <div class="gold-divider w-full absolute top-0"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <!-- Left: Content -->
+        <div class="fade-up">
+          <p class="text-gold uppercase tracking-[0.2em] text-sm font-medium mb-3">Nossos pilares</p>
+          <h2 class="font-serif italic text-3xl sm:text-4xl lg:text-5xl font-bold mb-8">
+            Por que a <span class="text-gold-gradient">Vizio Capital?</span>
+          </h2>
+
+          <div class="space-y-8">
+            <!-- Pilar 1 -->
+            <div class="flex gap-5">
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center">
+                <span class="text-gold font-serif italic text-lg font-bold">01</span>
+              </div>
+              <div>
+                <h3 class="font-serif italic text-lg text-white mb-2">Comercialização consultiva</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                  Não vendemos apólices — construímos soluções. Analisamos a realidade da sua empresa e recomendamos a melhor estratégia de proteção, com total transparência.
+                </p>
+              </div>
+            </div>
+
+            <!-- Pilar 2 -->
+            <div class="flex gap-5">
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center">
+                <span class="text-gold font-serif italic text-lg font-bold">02</span>
+              </div>
+              <div>
+                <h3 class="font-serif italic text-lg text-white mb-2">Gestão completa de riscos e benefícios</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                  Acompanhamos a sinistralidade, negociamos renovações e otimizamos custos continuamente. Sua empresa sempre com a melhor relação custo-benefício.
+                </p>
+              </div>
+            </div>
+
+            <!-- Pilar 3 -->
+            <div class="flex gap-5">
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center">
+                <span class="text-gold font-serif italic text-lg font-bold">03</span>
+              </div>
+              <div>
+                <h3 class="font-serif italic text-lg text-white mb-2">Soluções sob medida</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                  Cada empresa é única. Desenhamos coberturas personalizadas que atendem às exigências da convenção coletiva e vão além, protegendo o que mais importa.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Visual element -->
+        <div class="fade-up hidden lg:flex justify-center" style="transition-delay: 0.2s;">
+          <div class="relative">
+            <!-- Decorative rings -->
+            <div class="w-80 h-80 rounded-full border border-gold/10 flex items-center justify-center">
+              <div class="w-60 h-60 rounded-full border border-gold/15 flex items-center justify-center">
+                <div class="w-40 h-40 rounded-full border border-gold/20 flex items-center justify-center">
+                  <div class="w-24 h-24 rounded-full bg-gradient-to-br from-gold/20 to-gold/5 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Floating badges -->
+            <div class="absolute top-4 right-0 card-glow rounded-xl px-4 py-2 text-xs">
+              <span class="text-gold">✓</span> Conformidade garantida
+            </div>
+            <div class="absolute bottom-8 left-0 card-glow rounded-xl px-4 py-2 text-xs">
+              <span class="text-gold">✓</span> Sem passivo trabalhista
+            </div>
+            <div class="absolute top-1/2 -right-4 card-glow rounded-xl px-4 py-2 text-xs">
+              <span class="text-gold">✓</span> Melhor custo-benefício
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SEÇÃO DE URGÊNCIA ==================== -->
+  <section class="urgency-bg py-20 lg:py-28 relative">
+    <div class="gold-divider w-full absolute top-0"></div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="fade-up">
+        <!-- Alert icon -->
+        <div class="w-16 h-16 mx-auto mb-8 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+          <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+          </svg>
+        </div>
+
+        <p class="text-red-400/80 uppercase tracking-[0.2em] text-sm font-medium mb-3">Atenção</p>
+        <h2 class="font-serif italic text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+          Sua empresa está em <span class="text-red-400">risco?</span>
+        </h2>
+
+        <p class="text-gray-300 text-lg leading-relaxed mb-8 max-w-3xl mx-auto">
+          Empresas obrigadas por convenção coletiva que <strong class="text-white">não oferecem Seguro de Vida em Grupo</strong> aos seus colaboradores estão sujeitas a graves consequências legais e financeiras.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+          <div class="card-glow rounded-xl p-6 border-red-500/10 hover:border-red-500/30">
+            <svg class="w-8 h-8 text-red-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <h3 class="text-white font-semibold text-sm mb-1">Passivo Trabalhista</h3>
+            <p class="text-gray-500 text-xs">Indenizações milionárias em caso de sinistro sem cobertura</p>
+          </div>
+          <div class="card-glow rounded-xl p-6 border-red-500/10 hover:border-red-500/30">
+            <svg class="w-8 h-8 text-red-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <h3 class="text-white font-semibold text-sm mb-1">Multas e Penalidades</h3>
+            <p class="text-gray-500 text-xs">Autuações por descumprimento da convenção coletiva</p>
+          </div>
+          <div class="card-glow rounded-xl p-6 border-red-500/10 hover:border-red-500/30">
+            <svg class="w-8 h-8 text-red-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <h3 class="text-white font-semibold text-sm mb-1">Fiscalização Sindical</h3>
+            <p class="text-gray-500 text-xs">Sindicatos podem exigir cumprimento e aplicar sanções</p>
+          </div>
+        </div>
+
+        <a href="#leadForm"
+          class="cta-btn inline-block rounded-xl px-10 py-4 text-dark-900 font-bold text-sm sm:text-base uppercase tracking-wider">
+          Regularize agora — Solicite sua cotação
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CTA FINAL ==================== -->
+  <section class="bg-dark-800 py-20 lg:py-24 relative">
+    <div class="gold-divider w-full absolute top-0"></div>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <!-- Logo Component: Sun Icon + Text (CTA Final) -->
+      <div class="flex items-center justify-center gap-2 mb-8">
+        <img src="assets/sol-vizio.png" alt="Vizio" class="h-6 sm:h-8 w-auto object-contain" />
+        <div>
+          <div class="font-sans font-light tracking-widest text-xs sm:text-sm text-white leading-none">VIZIO</div>
+          <div class="flex items-center gap-1 mt-0.5">
+            <div class="flex-1 h-px bg-white" style="width: 12px;"></div>
+            <div class="font-sans font-light tracking-widest text-xs text-white" style="font-size: 0.65rem;">CAPITAL</div>
+          </div>
+        </div>
+      </div>
+      <h2 class="font-serif italic text-3xl sm:text-4xl font-bold mb-4">
+        Proteja sua empresa <span class="text-gold-gradient">hoje</span>
+      </h2>
+      <p class="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
+        Solicite uma cotação gratuita e receba as melhores propostas de Seguro de Vida em Grupo em até 24 horas.
+      </p>
+      <a href="#leadForm"
+        class="cta-btn inline-block rounded-xl px-10 py-4 text-dark-900 font-bold text-sm sm:text-base uppercase tracking-wider">
+        Quero minha cotação gratuita
+      </a>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-dark-900 py-12 relative">
+    <div class="gold-divider w-full absolute top-0"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="flex flex-col items-center md:items-start gap-4">
+          <!-- Logo Component: Sun Icon + Text (Footer) -->
+          <div class="flex items-center gap-2">
+            <img src="assets/sol-vizio.png" alt="Vizio" class="h-8 sm:h-10 w-auto object-contain" />
+            <div>
+              <div class="font-sans font-light tracking-widest text-sm sm:text-base text-white leading-none">VIZIO</div>
+              <div class="flex items-center gap-2 mt-0.5">
+                <div class="flex-1 h-px bg-white" style="width: 20px;"></div>
+                <div class="font-sans font-light tracking-widest text-xs text-white">CAPITAL</div>
+              </div>
+            </div>
+          </div>
+          <p class="font-serif italic text-lg sm:text-xl font-bold text-gold">Viver bem é estar <span class="italic">protegido!</span></p>
+        </div>
+
+        <div class="flex flex-col items-center md:items-end gap-3">
+          <a href="https://wa.me/5500000000000" target="_blank" rel="noopener"
+            class="flex items-center gap-2 text-gray-400 hover:text-gold transition-colors text-sm">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+            Fale conosco pelo WhatsApp
+          </a>
+          <p class="text-gray-600 text-xs">
+            © 2026 Vizio Capital. Todos os direitos reservados.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script>
+    // Scroll reveal animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Form submission handler
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById('leadForm');
+      const success = document.getElementById('formSuccess');
+
+      // Simulate form submission
+      const btn = form.querySelector('button[type="submit"]');
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        form.classList.add('hidden');
+        success.classList.remove('hidden');
+      }, 1200);
+    }
+
+    // WhatsApp mask
+    const whatsappInput = document.querySelector('input[name="whatsapp"]');
+    whatsappInput.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 11) value = value.slice(0, 11);
+      if (value.length > 7) {
+        value = `(${value.slice(0,2)}) ${value.slice(2,7)}-${value.slice(7)}`;
+      } else if (value.length > 2) {
+        value = `(${value.slice(0,2)}) ${value.slice(2)}`;
+      } else if (value.length > 0) {
+        value = `(${value}`;
+      }
+      e.target.value = value;
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ==================== IA AGENT SCRIPTS ====================
+    let currentSessionId = null;
+
+    // Drop zone / file upload
+    const dropZone = document.getElementById('dropZone');
+    const pdfInput = document.getElementById('pdfInput');
+    const fileNameEl = document.getElementById('fileName');
+
+    if (dropZone) {
+      dropZone.addEventListener('click', () => pdfInput.click());
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-gold/60'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-gold/60'));
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-gold/60');
+        if (e.dataTransfer.files.length && e.dataTransfer.files[0].type === 'application/pdf') {
+          pdfInput.files = e.dataTransfer.files;
+          showFileName(e.dataTransfer.files[0].name);
+        }
+      });
+      pdfInput.addEventListener('change', () => {
+        if (pdfInput.files.length) showFileName(pdfInput.files[0].name);
+      });
+    }
+
+    function showFileName(name) {
+      fileNameEl.textContent = name;
+      fileNameEl.classList.remove('hidden');
+    }
+
+    // IA Form submission
+    const iaForm = document.getElementById('iaForm');
+    if (iaForm) {
+      iaForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!pdfInput.files.length) {
+          alert('Por favor, selecione um arquivo PDF da ap\u00f3lice.');
+          return;
+        }
+
+        const submitText = document.getElementById('iaSubmitText');
+        const submitLoading = document.getElementById('iaSubmitLoading');
+        const submitBtn = document.getElementById('iaSubmitBtn');
+
+        submitText.classList.add('hidden');
+        submitLoading.classList.remove('hidden');
+        submitBtn.disabled = true;
+
+        const formData = new FormData();
+        formData.append('nome', iaForm.ia_nome.value);
+        formData.append('empresa', iaForm.ia_empresa.value);
+        formData.append('cnpj', iaForm.ia_cnpj.value);
+        formData.append('whatsapp', iaForm.ia_whatsapp.value);
+        formData.append('email', iaForm.ia_email.value);
+        formData.append('convencao', iaForm.ia_convencao.value);
+        formData.append('apolice', pdfInput.files[0]);
+
+        try {
+          const res = await fetch('/api/analyze', { method: 'POST', body: formData });
+          const data = await res.json();
+
+          if (data.success) {
+            currentSessionId = data.sessionId;
+            renderAnalysis(data.analysis);
+          } else {
+            alert(data.error || 'Erro ao analisar. Tente novamente.');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Erro de conex\u00e3o. Verifique sua internet e tente novamente.');
+        } finally {
+          submitText.classList.remove('hidden');
+          submitLoading.classList.add('hidden');
+          submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // Render analysis results
+    function renderAnalysis(analysis) {
+      // Hide placeholder, show results
+      document.getElementById('ia-placeholder').classList.add('hidden');
+      document.getElementById('ia-results').classList.remove('hidden');
+      document.getElementById('ia-chat-section').classList.remove('hidden');
+
+      // Score gauge
+      const score = analysis.score || 0;
+      const circumference = 2 * Math.PI * 70;
+      const offset = circumference - (score / 100) * circumference;
+      const arc = document.getElementById('scoreArc');
+
+      let scoreColor = '#ef4444'; // red
+      if (score >= 80) scoreColor = '#22c55e'; // green
+      else if (score >= 60) scoreColor = '#c5a55a'; // gold
+      else if (score >= 40) scoreColor = '#eab308'; // yellow
+      else if (score >= 20) scoreColor = '#f97316'; // orange
+
+      setTimeout(() => {
+        arc.style.strokeDashoffset = offset;
+        arc.style.stroke = scoreColor;
+      }, 200);
+
+      document.getElementById('scoreNumber').textContent = score;
+      document.getElementById('scoreNumber').style.color = scoreColor;
+      document.getElementById('scoreLabel').textContent = analysis.scoreLabel || '';
+      document.getElementById('scoreResumo').textContent = analysis.resumo || '';
+
+      // Coberturas
+      const cobGrid = document.getElementById('coberturasGrid');
+      cobGrid.innerHTML = '';
+      if (analysis.coberturas && analysis.coberturas.length) {
+        analysis.coberturas.forEach(c => {
+          const statusColors = { conforme: 'bg-green-500/20 text-green-400 border-green-500/30', parcial: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', ausente: 'bg-red-500/20 text-red-400 border-red-500/30' };
+          const statusLabels = { conforme: 'Conforme', parcial: 'Parcial', ausente: 'Ausente' };
+          const sc = statusColors[c.status] || statusColors.parcial;
+          const sl = statusLabels[c.status] || c.status;
+          cobGrid.innerHTML += `
+            <div class="flex items-center justify-between p-3 rounded-lg bg-dark-700/30 border border-white/5">
+              <div class="flex-1">
+                <p class="text-white text-sm font-medium">${c.nome}</p>
+                <p class="text-gray-500 text-xs mt-0.5">${c.observacao || ''}</p>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded-full border ${sc} font-medium ml-3 whitespace-nowrap">${sl}</span>
+            </div>`;
+        });
+      }
+
+      // Gaps
+      const gapsGrid = document.getElementById('gapsGrid');
+      gapsGrid.innerHTML = '';
+      if (analysis.gaps && analysis.gaps.length) {
+        analysis.gaps.forEach(g => {
+          const sevColors = { alta: 'border-l-red-500', media: 'border-l-yellow-500', baixa: 'border-l-green-500' };
+          const sc = sevColors[g.severidade] || sevColors.media;
+          gapsGrid.innerHTML += `
+            <div class="p-3 rounded-lg bg-dark-700/30 border-l-2 ${sc}">
+              <p class="text-white text-sm font-medium">${g.titulo}</p>
+              <p class="text-gray-400 text-xs mt-1">${g.descricao}</p>
+              <p class="text-gold text-xs mt-1.5">\u2192 ${g.recomendacao}</p>
+            </div>`;
+        });
+      }
+
+      // Pre\u00e7o
+      const precoGrid = document.getElementById('precoGrid');
+      precoGrid.innerHTML = '';
+      if (analysis.precoAnalise) {
+        const p = analysis.precoAnalise;
+        const avalColors = { abaixo: 'text-green-400', dentro: 'text-gold', acima: 'text-red-400' };
+        const ac = avalColors[p.avaliacao] || 'text-gold';
+        precoGrid.innerHTML = `
+          <div class="bg-dark-700/30 rounded-lg p-4 text-center">
+            <p class="text-gray-500 text-xs mb-1">Custo Atual</p>
+            <p class="text-white text-lg font-bold">${p.custoAtual}</p>
+          </div>
+          <div class="bg-dark-700/30 rounded-lg p-4 text-center">
+            <p class="text-gray-500 text-xs mb-1">Faixa de Mercado</p>
+            <p class="text-white text-lg font-bold">${p.faixaMercado}</p>
+          </div>
+          <div class="bg-dark-700/30 rounded-lg p-4 text-center">
+            <p class="text-gray-500 text-xs mb-1">Avalia\u00e7\u00e3o</p>
+            <p class="${ac} text-lg font-bold capitalize">${p.avaliacao}</p>
+          </div>
+          <div class="bg-dark-700/30 rounded-lg p-4 text-center">
+            <p class="text-gray-500 text-xs mb-1">Economia Potencial</p>
+            <p class="text-green-400 text-lg font-bold">${p.potencialEconomia}</p>
+          </div>`;
+      }
+
+      // Recomenda\u00e7\u00f5es
+      const recsGrid = document.getElementById('recsGrid');
+      recsGrid.innerHTML = '';
+      if (analysis.recomendacoes && analysis.recomendacoes.length) {
+        analysis.recomendacoes.forEach((r, i) => {
+          recsGrid.innerHTML += `
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-dark-700/30">
+              <span class="flex-shrink-0 w-6 h-6 rounded-full bg-gold/20 text-gold text-xs flex items-center justify-center font-bold">${i+1}</span>
+              <p class="text-gray-300 text-sm">${r}</p>
+            </div>`;
+        });
+      }
+
+      // Scroll to results
+      document.getElementById('ia-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Chat functionality
+    const chatInput = document.getElementById('chatInput');
+    const chatSendBtn = document.getElementById('chatSendBtn');
+    const chatMessages = document.getElementById('chatMessages');
+
+    if (chatSendBtn) {
+      chatSendBtn.addEventListener('click', sendChatMessage);
+    }
+    if (chatInput) {
+      chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') sendChatMessage();
+      });
+    }
+
+    async function sendChatMessage() {
+      const msg = chatInput.value.trim();
+      if (!msg || !currentSessionId) return;
+
+      // Add user message
+      chatMessages.innerHTML += `
+        <div class="flex gap-3 justify-end">
+          <div class="bg-gold/10 border border-gold/20 rounded-xl rounded-tr-none px-4 py-2.5 max-w-[80%]">
+            <p class="text-white text-sm">${escapeHtml(msg)}</p>
+          </div>
+          <div class="w-7 h-7 rounded-full bg-dark-600 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          </div>
+        </div>`;
+      chatInput.value = '';
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Show typing indicator
+      const typingId = 'typing-' + Date.now();
+      chatMessages.innerHTML += `
+        <div id="${typingId}" class="flex gap-3">
+          <div class="w-7 h-7 rounded-full bg-gold/20 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <div class="bg-dark-700/50 rounded-xl rounded-tl-none px-4 py-2.5">
+            <div class="flex gap-1"><div class="w-2 h-2 bg-gold/40 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gold/40 rounded-full animate-bounce" style="animation-delay:0.1s"></div><div class="w-2 h-2 bg-gold/40 rounded-full animate-bounce" style="animation-delay:0.2s"></div></div>
+          </div>
+        </div>`;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId: currentSessionId, message: msg })
+        });
+        const data = await res.json();
+
+        // Remove typing indicator
+        const typingEl = document.getElementById(typingId);
+        if (typingEl) typingEl.remove();
+
+        if (data.success) {
+          chatMessages.innerHTML += `
+            <div class="flex gap-3">
+              <div class="w-7 h-7 rounded-full bg-gold/20 flex-shrink-0 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div class="bg-dark-700/50 rounded-xl rounded-tl-none px-4 py-2.5 max-w-[80%]">
+                <div class="text-gray-300 text-sm whitespace-pre-wrap">${formatMarkdown(data.reply)}</div>
+              </div>
+            </div>`;
+        } else {
+          chatMessages.innerHTML += `
+            <div class="flex gap-3">
+              <div class="w-7 h-7 rounded-full bg-red-500/20 flex-shrink-0 flex items-center justify-center">
+                <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div class="bg-dark-700/50 rounded-xl rounded-tl-none px-4 py-2.5">
+                <p class="text-red-400 text-sm">${data.error || 'Erro ao enviar mensagem.'}</p>
+              </div>
+            </div>`;
+        }
+      } catch (err) {
+        const typingEl = document.getElementById(typingId);
+        if (typingEl) typingEl.remove();
+        chatMessages.innerHTML += `
+          <div class="text-center py-2"><p class="text-red-400 text-xs">Erro de conex\u00e3o. Tente novamente.</p></div>`;
+      }
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function formatMarkdown(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\n/g, '<br>');
+    }
+
+    // CNPJ mask
+    const cnpjInput = document.querySelector('input[name="ia_cnpj"]');
+    if (cnpjInput) {
+      cnpjInput.addEventListener('input', function(e) {
+        let v = e.target.value.replace(/\D/g, '');
+        if (v.length > 14) v = v.slice(0, 14);
+        if (v.length > 12) v = v.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d)/, '$1.$2.$3/$4-$5');
+        else if (v.length > 8) v = v.replace(/(\d{2})(\d{3})(\d{3})(\d)/, '$1.$2.$3/$4');
+        else if (v.length > 5) v = v.replace(/(\d{2})(\d{3})(\d)/, '$1.$2.$3');
+        else if (v.length > 2) v = v.replace(/(\d{2})(\d)/, '$1.$2');
+        e.target.value = v;
+      });
+    }
+
+    // IA WhatsApp mask
+    const iaWhatsapp = document.querySelector('input[name="ia_whatsapp"]');
+    if (iaWhatsapp) {
+      iaWhatsapp.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.slice(0, 11);
+        if (value.length > 7) value = `(${value.slice(0,2)}) ${value.slice(2,7)}-${value.slice(7)}`;
+        else if (value.length > 2) value = `(${value.slice(0,2)}) ${value.slice(2)}`;
+        else if (value.length > 0) value = `(${value}`;
+        e.target.value = value;
+      });
+    }
+  </script>
+</body>
+</html>

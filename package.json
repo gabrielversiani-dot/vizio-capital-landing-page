@@ -1,0 +1,33 @@
+{
+  "name": "vizio-capital-landing-page",
+  "version": "1.0.0",
+  "description": "Landing page profissional com agente de IA para análise de apólices de Seguro de Vida em Grupo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vizio",
+    "capital",
+    "seguros",
+    "seguro-de-vida",
+    "inteligencia-artificial",
+    "openai",
+    "landing-page"
+  ],
+  "author": "Vizio Capital",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "multer": "^2.1.0",
+    "openai": "^6.25.0",
+    "pdf-parse": "^2.4.5"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}
