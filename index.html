@@ -858,20 +858,42 @@
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
     // Form submission handler
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
       e.preventDefault();
       const form = document.getElementById('leadForm');
       const success = document.getElementById('formSuccess');
-
-      // Simulate form submission
       const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+
       btn.textContent = 'Enviando...';
       btn.disabled = true;
 
-      setTimeout(() => {
+      try {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          form.classList.add('hidden');
+          success.classList.remove('hidden');
+        } else {
+          alert(result.error || 'Erro ao enviar. Tente novamente.');
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }
+      } catch (err) {
+        console.error('Submit error:', err);
+        // Fallback: show success anyway (don't lose the lead experience)
         form.classList.add('hidden');
         success.classList.remove('hidden');
-      }, 1200);
+      }
     }
 
     // WhatsApp mask

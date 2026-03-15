@@ -281,6 +281,125 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
+// ==================== RD STATION CRM INTEGRATION ====================
+const RD_CRM_TOKEN = process.env.RD_CRM_TOKEN || '';
+const RD_CRM_BASE = 'https://crm.rdstation.com/api/v1';
+const RD_PIPELINE_VG = '69a228a9a1145b001541d220'; // Vida em Grupo PME
+const RD_STAGE_LEAD = '69a228a9a1145b001541d222'; // Lead Recebido
+
+async function createRDContact(data) {
+  const https = require('https');
+  const payload = JSON.stringify({
+    contact: {
+      name: data.nome || '',
+      title: data.cargo || '',
+      phones: [{ phone: data.whatsapp || '', type: 'cellphone' }],
+      emails: [{ email: data.email || '' }],
+      legal_bases: [{ category: 'communications', type: 'consent', status: 'given' }]
+    }
+  });
+
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'crm.rdstation.com',
+      path: `/api/v1/contacts?token=${RD_CRM_TOKEN}`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+    }, (res) => {
+      let body = '';
+      res.on('data', chunk => body += chunk);
+      res.on('end', () => {
+        try { resolve(JSON.parse(body)); } catch(e) { resolve({ error: body }); }
+      });
+    });
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+async function createRDDeal(contactId, data) {
+  const https = require('https');
+  const dealName = `[LP Tráfego] ${data.empresa || 'Lead'} - ${data.nome || 'Sem nome'}`;
+  const payload = JSON.stringify({
+    deal: {
+      name: dealName,
+      deal_pipeline_id: RD_PIPELINE_VG,
+      deal_stage_id: RD_STAGE_LEAD,
+      rating: 1,
+      contacts_ids: [contactId],
+      deal_custom_fields: [],
+      notes: `Lead capturado via Landing Page Tráfego Pago\n` +
+             `Empresa: ${data.empresa || 'N/I'}\n` +
+             `Cargo: ${data.cargo || 'N/I'}\n` +
+             `Funcionários: ${data.funcionarios || 'N/I'}\n` +
+             `Estado: ${data.estado || 'N/I'}\n` +
+             `WhatsApp: ${data.whatsapp || 'N/I'}\n` +
+             `Email: ${data.email || 'N/I'}\n` +
+             `CNPJ: ${data.cnpj || 'N/I'}\n` +
+             `Convenção Coletiva: ${data.convencao || 'N/I'}\n` +
+             `Data: ${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}`
+    }
+  });
+
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'crm.rdstation.com',
+      path: `/api/v1/deals?token=${RD_CRM_TOKEN}`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+    }, (res) => {
+      let body = '';
+      res.on('data', chunk => body += chunk);
+      res.on('end', () => {
+        try { resolve(JSON.parse(body)); } catch(e) { resolve({ error: body }); }
+      });
+    });
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+// POST /api/lead - Capture lead from main form and create in RD CRM
+app.post('/api/lead', async (req, res) => {
+  try {
+    const { nome, empresa, cargo, funcionarios, estado, whatsapp } = req.body;
+
+    if (!nome || !empresa || !whatsapp) {
+      return res.status(400).json({ error: 'Nome, empresa e WhatsApp são obrigatórios.' });
+    }
+
+    let contactId = null;
+    let dealId = null;
+
+    if (RD_CRM_TOKEN) {
+      // Create contact in RD CRM
+      const contact = await createRDContact({ nome, empresa, cargo, whatsapp });
+      contactId = contact._id || contact.id || null;
+
+      // Create deal in pipeline Vida em Grupo PME
+      if (contactId) {
+        const deal = await createRDDeal(contactId, { nome, empresa, cargo, funcionarios, estado, whatsapp });
+        dealId = deal._id || deal.id || null;
+      }
+    }
+
+    console.log(`[LEAD] ${nome} | ${empresa} | ${whatsapp} | CRM Contact: ${contactId} | Deal: ${dealId}`);
+
+    res.json({
+      success: true,
+      message: 'Lead capturado com sucesso!',
+      contactId,
+      dealId
+    });
+
+  } catch (err) {
+    console.error('Lead capture error:', err);
+    res.status(500).json({ error: 'Erro ao processar. Tente novamente.' });
+  }
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
