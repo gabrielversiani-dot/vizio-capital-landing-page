@@ -288,6 +288,121 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
+// ==================== PDF REPORT GENERATION ====================
+const PDFDocument = require('pdfkit');
+
+app.post('/api/report', (req, res) => {
+  try {
+    const { analysis, empresa, nome } = req.body;
+    if (!analysis) return res.status(400).json({ error: 'Dados da análise não encontrados.' });
+
+    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+    const chunks = [];
+    doc.on('data', chunk => chunks.push(chunk));
+    doc.on('end', () => {
+      const pdfBuffer = Buffer.concat(chunks);
+      res.set({ 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename=Analise_Apolice_Vizio_Capital.pdf` });
+      res.send(pdfBuffer);
+    });
+
+    // Colors
+    const gold = '#C0966B';
+    const dark = '#212121';
+    const darkGray = '#444444';
+    const lightGray = '#888888';
+
+    // Header
+    doc.rect(0, 0, 595, 100).fill(dark);
+    doc.fontSize(28).fill('#FFFFFF').font('Helvetica-Bold').text('VIZIO', 50, 30, { continued: true });
+    doc.fill(gold).text(' CAPITAL');
+    doc.fontSize(11).fill(gold).font('Helvetica').text('Relatório de Análise de Apólice', 50, 65);
+    doc.fontSize(9).fill('#999999').text(`Gerado em ${new Date().toLocaleDateString('pt-BR')} | ${empresa || 'Empresa'}`, 50, 82);
+
+    doc.moveDown(3);
+
+    // Score
+    const score = analysis.score || 0;
+    const scoreLabel = analysis.scoreLabel || 'N/A';
+    const scoreColor = score >= 70 ? '#22c55e' : score >= 40 ? '#eab308' : '#ef4444';
+
+    doc.rect(50, 120, 495, 80).lineWidth(1).strokeColor(gold).stroke();
+    doc.fontSize(14).fill(dark).font('Helvetica-Bold').text('SCORE DE CONFORMIDADE', 70, 135);
+    doc.fontSize(42).fill(scoreColor).font('Helvetica-Bold').text(`${score}`, 400, 125, { width: 120, align: 'center' });
+    doc.fontSize(11).fill(darkGray).font('Helvetica').text(scoreLabel, 400, 172, { width: 120, align: 'center' });
+    
+    if (analysis.resumo) {
+      doc.fontSize(10).fill(darkGray).font('Helvetica').text(analysis.resumo, 70, 160, { width: 310 });
+    }
+
+    doc.moveDown(2);
+    let y = 220;
+
+    // Coberturas
+    if (analysis.coberturas && analysis.coberturas.length > 0) {
+      y += 10;
+      doc.fontSize(13).fill(gold).font('Helvetica-Bold').text('COBERTURAS ANALISADAS', 50, y);
+      y += 25;
+
+      analysis.coberturas.forEach(cob => {
+        if (y > 720) { doc.addPage(); y = 50; }
+        const statusIcon = cob.status === 'conforme' ? '✓' : cob.status === 'parcial' ? '⚠' : '✗';
+        const statusColor = cob.status === 'conforme' ? '#22c55e' : cob.status === 'parcial' ? '#eab308' : '#ef4444';
+        doc.fontSize(10).fill(statusColor).font('Helvetica-Bold').text(statusIcon, 55, y);
+        doc.fill(dark).font('Helvetica-Bold').text(cob.nome || '', 75, y);
+        doc.fontSize(9).fill(lightGray).font('Helvetica').text(`Atual: ${cob.valorAtual || 'N/I'} | Recomendado: ${cob.valorRecomendado || 'N/I'}`, 75, y + 14);
+        if (cob.observacao) doc.fontSize(8).fill(lightGray).text(cob.observacao, 75, y + 26);
+        y += cob.observacao ? 42 : 32;
+      });
+    }
+
+    // Gaps
+    if (analysis.gaps && analysis.gaps.length > 0) {
+      y += 15;
+      if (y > 650) { doc.addPage(); y = 50; }
+      doc.fontSize(13).fill('#ef4444').font('Helvetica-Bold').text('GAPS DE COBERTURA', 50, y);
+      y += 25;
+
+      analysis.gaps.forEach(gap => {
+        if (y > 700) { doc.addPage(); y = 50; }
+        doc.fontSize(10).fill(dark).font('Helvetica-Bold').text(gap.titulo || '', 55, y);
+        doc.fontSize(9).fill(darkGray).font('Helvetica').text(gap.descricao || '', 55, y + 14, { width: 480 });
+        if (gap.recomendacao) {
+          doc.fontSize(9).fill(gold).text(`→ ${gap.recomendacao}`, 55, y + 30, { width: 480 });
+          y += 50;
+        } else {
+          y += 35;
+        }
+      });
+    }
+
+    // Recomendações
+    if (analysis.recomendacoes && analysis.recomendacoes.length > 0) {
+      y += 15;
+      if (y > 650) { doc.addPage(); y = 50; }
+      doc.fontSize(13).fill(gold).font('Helvetica-Bold').text('RECOMENDAÇÕES', 50, y);
+      y += 25;
+
+      analysis.recomendacoes.forEach((rec, i) => {
+        if (y > 720) { doc.addPage(); y = 50; }
+        doc.fontSize(10).fill(dark).font('Helvetica').text(`${i + 1}. ${rec}`, 55, y, { width: 480 });
+        y += 20;
+      });
+    }
+
+    // Footer CTA
+    if (y > 680) { doc.addPage(); y = 50; }
+    y += 20;
+    doc.rect(50, y, 495, 70).fill(dark);
+    doc.fontSize(13).fill(gold).font('Helvetica-Bold').text('Quer uma cotação personalizada?', 70, y + 15);
+    doc.fontSize(10).fill('#FFFFFF').font('Helvetica').text('Fale com um consultor Vizio Capital: (31) 99962-0760 | viziocapital.com.br', 70, y + 38);
+
+    doc.end();
+  } catch (err) {
+    console.error('PDF generation error:', err);
+    res.status(500).json({ error: 'Erro ao gerar relatório.' });
+  }
+});
+
 // ==================== RD STATION CRM INTEGRATION ====================
 const RD_CRM_TOKEN = process.env.RD_CRM_TOKEN || '';
 const RD_CRM_BASE = 'https://crm.rdstation.com/api/v1';
