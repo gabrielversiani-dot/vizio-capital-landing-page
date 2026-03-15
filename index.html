@@ -3,6 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18018531031"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18018531031');
+  </script>
   <title>Vizio Capital — Seguro de Vida em Grupo para PMEs</title>
   <meta name="description" content="Cotação gratuita de Seguro de Vida em Grupo para empresas obrigadas por convenção coletiva. Sem burocracia, com as maiores seguradoras do Brasil." />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -889,6 +897,10 @@
         const result = await res.json();
 
         if (result.success) {
+          // Google Ads conversion tracking
+          if (typeof gtag === 'function') {
+            gtag('event', 'conversion', { 'send_to': 'AW-18018531031/lead_form_submit' });
+          }
           form.classList.add('hidden');
           success.classList.remove('hidden');
         } else {
