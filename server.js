@@ -3,13 +3,15 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { OpenAI } = require('openai');
+const Anthropic = require('@anthropic-ai/sdk');
 
 const app = express();
 const PORT = 8080;
 
-// OpenAI client
-const openai = new OpenAI();
+// Anthropic client
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
 
 // Middleware
 app.use(cors());
@@ -176,18 +178,18 @@ Forneça sua análise no seguinte formato JSON (APENAS o JSON, sem texto adicion
   ]
 }`;
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4.1-mini',
+    const completion = await anthropic.messages.create({
+      model: 'claude-sonnet-4-5-20250514',
+      max_tokens: 4000,
+      system: SYSTEM_PROMPT,
       messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: analysisPrompt }
       ],
       temperature: 0.3,
-      max_tokens: 4000
     });
 
     let analysisResult;
-    const responseText = completion.choices[0].message.content.trim();
+    const responseText = completion.content[0].text.trim();
 
     try {
       // Try to parse JSON from the response
@@ -253,14 +255,19 @@ app.post('/api/chat', async (req, res) => {
     const session = sessions.get(sessionId);
     session.chatHistory.push({ role: 'user', content: message });
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4.1-mini',
-      messages: session.chatHistory,
+    // Separate system message from chat history for Anthropic
+    const systemMsg = session.chatHistory.find(m => m.role === 'system')?.content || SYSTEM_PROMPT;
+    const chatMessages = session.chatHistory.filter(m => m.role !== 'system');
+
+    const completion = await anthropic.messages.create({
+      model: 'claude-sonnet-4-5-20250514',
+      max_tokens: 2000,
+      system: systemMsg,
+      messages: chatMessages,
       temperature: 0.5,
-      max_tokens: 2000
     });
 
-    const reply = completion.choices[0].message.content;
+    const reply = completion.content[0].text;
     session.chatHistory.push({ role: 'assistant', content: reply });
 
     // Keep chat history manageable
